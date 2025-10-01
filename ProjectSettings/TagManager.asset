@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - PlayerDoor1
+  - PlayerDoor2
+  - Wall
+  - WallX
+  - WallY
+  - WallZ
   layers:
   - Default
   - TransparentFX
