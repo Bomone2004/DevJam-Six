@@ -71,7 +71,7 @@ public class BallManager : MonoBehaviour
         Vector3 movement1 = speed * Time.deltaTime;
         rigidbodyBall.MovePosition(rigidbodyBall.position + movement1);
 
-        Debug.LogWarning(movement1);
+        //Debug.LogWarning(movement1);
 
 
         if (ScorePlayer1 == WinScoor ||  ScorePlayer2 == WinScoor)
@@ -107,7 +107,7 @@ public class BallManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PlayerDoor1"))
         {
-            ScorePlayer1 += AddScore;
+            ScorePlayer2 += AddScore;
             if (clickSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(clickSound);
@@ -115,7 +115,7 @@ public class BallManager : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("PlayerDoor2"))
         {
-            ScorePlayer2 += AddScore;
+            ScorePlayer1 += AddScore;
             if (clickSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(clickSound);

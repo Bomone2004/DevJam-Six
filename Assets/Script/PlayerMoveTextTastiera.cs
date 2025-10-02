@@ -2,6 +2,7 @@ using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMoveTextTastiera : MonoBehaviour
 {
@@ -27,14 +28,37 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     private float speed = 100;
 
     [SerializeField]
+    private Rigidbody BallrigidBody;
+
+
+
+    [SerializeField]
     private int playerIndex = 0;
 
+    [Header("Dash")]
     private float lastDashTime = -1f;
     [SerializeField]
     private float dashCooldown = 3f; // 1 second cooldown
 
+
     [SerializeField]
     float dashSpeed = 10f;
+
+    [Header("Explosion")]
+
+    [SerializeField]
+    private GameObject ExplosionPosition1;
+
+    [SerializeField]
+    private GameObject ExplosionPosition2;
+    private float lastexplosionTime = -1f;
+    [SerializeField]
+    private float explosionCooldown = 3f; // 1 second cooldown
+    [SerializeField]
+    float explosionForce = 1;
+
+    [SerializeField]
+    float ExplosionRange = 10;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -60,6 +84,7 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     {
         Movement();
         DoDash();
+        DoExplosion();
     }
 
     private void Movement()
@@ -135,7 +160,7 @@ public class PlayerMoveTextTastiera : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator MoveZOverTime(Transform playerTransform, float startZ, float targetZ, float speed)
+    private IEnumerator MoveZOverTime(Transform playerTransform, float startZ, float targetZ, float speed)
     {
         float elapsed = 0f;
         float duration = Mathf.Abs(targetZ - startZ) / speed;
@@ -150,5 +175,22 @@ public class PlayerMoveTextTastiera : MonoBehaviour
             yield return null;
         }
         playerTransform.position = endPos;
+    }
+
+    private void DoExplosion()
+    {
+        float rtDash1 = Input.GetAxis("ExplosionTastiera Left");
+
+        if (rtDash1 >= 1.0f && Time.time - lastexplosionTime >= explosionCooldown)
+        {
+            BallrigidBody.AddExplosionForce(explosionForce, ExplosionPosition1.transform.position, ExplosionRange, 0, ForceMode.Impulse);
+        }
+
+        float rtDash2 = Input.GetAxis("ExplosionTastiera Right");
+
+        if (rtDash2 >= 1.0f && Time.time - lastexplosionTime >= explosionCooldown)
+        {
+            BallrigidBody.AddExplosionForce(explosionForce, ExplosionPosition2.transform.position, ExplosionRange, 0, ForceMode.Impulse);
+        }
     }
 }

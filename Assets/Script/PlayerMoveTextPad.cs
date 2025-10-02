@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using System.Collections;
 
 public class PlayerMoveTextPad : MonoBehaviour
 {
@@ -24,7 +25,42 @@ public class PlayerMoveTextPad : MonoBehaviour
     private Rigidbody characterRigidbody2;
 
     [SerializeField]
+    private Rigidbody BallrigidBody;
+
+
+
+
+    [SerializeField]
     private float speed = 100;
+
+    [Header("Dash")]
+    private float lastDashTime = -1f;
+    [SerializeField]
+    private float dashCooldown = 3f; // 1 second cooldown
+
+
+
+    [SerializeField]
+    float dashSpeed = 10f;
+
+    [Header("Explosion")]
+
+    [SerializeField]
+    private GameObject ExplosionPosition1;
+
+    [SerializeField]
+    private GameObject ExplosionPosition2;
+
+
+    private float lastexplosionTime = -1f;
+    [SerializeField]
+    private float explosionCooldown = 3f; // 1 second cooldown
+
+    [SerializeField]
+    float explosionForce = 20;
+
+    [SerializeField]
+    float explosionRange = 10;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -34,12 +70,6 @@ public class PlayerMoveTextPad : MonoBehaviour
     private Vector3 savePlayerPosition1;
     private Vector3 savePlayerPosition2;
 
-    private float lastDashTime = -1f;
-    [SerializeField]
-    private float dashCooldown = 3f; // 1 second cooldown
-
-    [SerializeField]
-    float dashSpeed = 10f;
 
     [SerializeField]
     private int playerIndex = 0;
@@ -59,6 +89,15 @@ public class PlayerMoveTextPad : MonoBehaviour
     {
         Movement();
         DoDash();
+        DoExplosion();
+        for (int i = 0; i < 20; i++)
+        {
+            KeyCode kc = KeyCode.Joystick1Button0 + i;
+            if (Input.GetKeyDown(kc))
+            {
+                Debug.LogWarning("Button pressed: " + kc);
+            }
+        }
     }
 
     private void Movement()
@@ -77,8 +116,8 @@ public class PlayerMoveTextPad : MonoBehaviour
         ////Player2.transform.Translate(movement2);
 
         ////characterController2.Move(movement2);
-        //characterRigidbody2.linearVelocity = movement2;
-        ///
+        //characterRigidbody2.linearVelocity = movement2; 
+        
         float moveHorizontal1 = Input.GetAxis("Horizontal");
         Vector3 movement1 = new Vector3(-moveHorizontal1, 0, 0) * speed * Time.deltaTime;
         // Muovi il player tramite Rigidbody usando MovePosition
@@ -133,7 +172,24 @@ public class PlayerMoveTextPad : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator MoveZOverTime(Transform playerTransform, float startZ, float targetZ, float speed)
+    private void DoExplosion()
+    {
+        //bool rtExplosion1 = Input.GetButtonDown("ExplosionPad Left");
+
+        if (Input.GetButtonDown("ExplosionPad Left") && Time.time - lastexplosionTime >= explosionCooldown)
+        {
+            BallrigidBody.AddExplosionForce(explosionForce, ExplosionPosition1.transform.position, explosionRange, 0, ForceMode.Impulse);
+        }
+
+        //bool rtExplosion2 = Input.GetButtonDown("ExplosionPad Right");
+
+        if (Input.GetButtonDown("ExplosionPad Right") && Time.time - lastexplosionTime >= explosionCooldown)
+        {
+            BallrigidBody.AddExplosionForce(explosionForce, ExplosionPosition2.transform.position, explosionRange, 0, ForceMode.Impulse);
+        }
+    }
+
+    private IEnumerator MoveZOverTime(Transform playerTransform, float startZ, float targetZ, float speed)
     {
         float elapsed = 0f;
         float duration = Mathf.Abs(targetZ - startZ) / speed;
