@@ -14,7 +14,13 @@ public class BallManager : MonoBehaviour
     [SerializeField]
     float deceleration;
 
+    [SerializeField]
+    private int AddScore = 100;
     private Rigidbody rigidbodyBall;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip clickSound;
 
 
 
@@ -60,21 +66,12 @@ public class BallManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("PlayerDoor1"))
-        {
-            ScorePlayer1 += 100;
-            transform.position = BallStartPosition;
-        }
-        if (collision.gameObject.CompareTag("PlayerDoor2"))
-        {
-            ScorePlayer2 += 100;
-            transform.position = BallStartPosition;
-        }
+        
         if (collision.gameObject.CompareTag("WallX"))
         {
             speed.x *= -1;
         }
-        if (collision.gameObject.CompareTag("WallZ"))
+        else if (collision.gameObject.CompareTag("WallZ"))
         {
             speed.z *= -1;
         }
@@ -86,6 +83,30 @@ public class BallManager : MonoBehaviour
                 Vector3 normal = collision.contacts[0].normal;
                 speed = Vector3.Reflect(speed * 2, normal);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerDoor1"))
+        {
+            ScorePlayer1 += AddScore;
+            if (clickSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(clickSound);
+            }
+        }
+        else if (collision.gameObject.CompareTag("PlayerDoor2"))
+        {
+            ScorePlayer2 += AddScore;
+            if (clickSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(clickSound);
+            }
+        }
+        else if (collision.gameObject.CompareTag("PlayerDoorRespawn"))
+        {
+            transform.position = BallStartPosition;
         }
     }
     private void OnCollisionStay(Collision collision)

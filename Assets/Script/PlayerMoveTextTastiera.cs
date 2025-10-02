@@ -1,5 +1,6 @@
 using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class PlayerMoveTextTastiera : MonoBehaviour
@@ -11,11 +12,11 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     private GameObject Player2;
 
 
-    [SerializeField]
-    private CharacterController characterController1;
+    //[SerializeField]
+    //private CharacterController characterController1;
 
-    [SerializeField]
-    private CharacterController characterController2;
+    //[SerializeField]
+    //private CharacterController characterController2;
 
     [SerializeField]
     private Rigidbody characterRigidbody1;
@@ -23,12 +24,12 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     [SerializeField]
     private Rigidbody characterRigidbody2;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip clickSound;
+
     [SerializeField]
     private float speed = 100;
-    //[SerializeField]
-    private PlayerInput playerInput;
-
-    private Vector3 inputVec = Vector3.zero;
 
     [SerializeField]
     private int playerIndex = 0;
@@ -45,10 +46,6 @@ public class PlayerMoveTextTastiera : MonoBehaviour
         return playerIndex;
     }
 
-    public void SetInputVector(Vector2 direction)
-    {
-        inputVec = direction;
-    }
 
     private void Start()
     {
@@ -104,6 +101,10 @@ public class PlayerMoveTextTastiera : MonoBehaviour
             savePlayerPosition1.z = Player1.transform.position.z;
             savePlayerPosition2.z = Player2.transform.position.z;
             lastDashTime = Time.time;
+            if (clickSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(clickSound);
+            }
         }
     }
 

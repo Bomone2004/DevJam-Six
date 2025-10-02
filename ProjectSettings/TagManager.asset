@@ -10,6 +10,7 @@ TagManager:
   - WallX
   - WallY
   - WallZ
+  - PlayerDoorRespawn
   layers:
   - Default
   - TransparentFX

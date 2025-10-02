@@ -11,11 +11,11 @@ public class PlayerMoveTextPad : MonoBehaviour
     [SerializeField]
     private GameObject Player2;
 
-    [SerializeField]
-    private CharacterController characterController1;
+    //[SerializeField]
+    //private CharacterController characterController1;
 
-    [SerializeField]
-    private CharacterController characterController2;
+    //[SerializeField]
+    //private CharacterController characterController2;
 
     [SerializeField]
     private Rigidbody characterRigidbody1;
@@ -26,10 +26,10 @@ public class PlayerMoveTextPad : MonoBehaviour
     [SerializeField]
     private float speed = 100;
 
-    //[SerializeField]
-    private PlayerInput playerInput;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip clickSound;
 
-    private Vector3 inputVec = Vector3.zero;
 
     private Vector3 savePlayerPosition1;
     private Vector3 savePlayerPosition2;
@@ -45,10 +45,6 @@ public class PlayerMoveTextPad : MonoBehaviour
         return playerIndex;
     }
 
-    public void SetInputVector(Vector2 direction)
-    {
-        inputVec = direction;
-    }
 
     private void Start()
     {
@@ -103,6 +99,10 @@ public class PlayerMoveTextPad : MonoBehaviour
             savePlayerPosition1.z = Player1.transform.position.z;
             savePlayerPosition2.z = Player2.transform.position.z;
             lastDashTime = Time.time;
+            if (clickSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(clickSound);
+            }
         }
     }
        
