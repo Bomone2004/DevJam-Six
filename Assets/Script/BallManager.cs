@@ -62,9 +62,9 @@ public class BallManager : MonoBehaviour
     {
         // Limitiamo la velocità massima nel FixedUpdate per coerenza con la fisica
         // Usiamo rigidbodyBall.velocity.magnitude per ottenere la velocità reale
-        if (rigidbodyBall.velocity.magnitude > MaxSpeed)
+        if (rigidbodyBall.linearVelocity.magnitude > MaxSpeed)
         {
-            rigidbodyBall.velocity = rigidbodyBall.velocity.normalized * MaxSpeed;
+            rigidbodyBall.linearVelocity = rigidbodyBall.linearVelocity.normalized * MaxSpeed;
         }
 
         // Controlliamo la condizione di vittoria
@@ -90,7 +90,7 @@ public class BallManager : MonoBehaviour
 
         // Applichiamo la nuova velocità e la nuova direzione
         currentVelocity = reflection * newSpeed;
-        rigidbodyBall.velocity = currentVelocity;
+        rigidbodyBall.linearVelocity = currentVelocity;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -119,7 +119,7 @@ public class BallManager : MonoBehaviour
         // Ferma completamente la palla
         if (rigidbodyBall != null)
         {
-            rigidbodyBall.velocity = Vector3.zero;
+            rigidbodyBall.linearVelocity = Vector3.zero;
             rigidbodyBall.angularVelocity = Vector3.zero;
         }
 
@@ -128,7 +128,7 @@ public class BallManager : MonoBehaviour
         currentVelocity = new Vector3(0, 0, randomDirection * StartSpeed);
 
         // Applica la velocità iniziale
-        rigidbodyBall.velocity = currentVelocity;
+        rigidbodyBall.linearVelocity = currentVelocity;
     }
 
     private void PlayClickSound()
