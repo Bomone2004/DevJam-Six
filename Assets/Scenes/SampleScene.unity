@@ -1938,8 +1938,8 @@ MonoBehaviour:
   playerIndex: 1
   dashCooldown: 0.5
   dashSpeed: 10
-  ExplosionPosition1: {fileID: 2076031250}
-  ExplosionPosition2: {fileID: 1778636289}
+  ExplosionPosition1: {fileID: 1778636289}
+  ExplosionPosition2: {fileID: 2076031250}
   explosionCooldown: 1
   explosionForce: 1
   ExplosionRange: 10

@@ -34,10 +34,11 @@ public class PlayerMoveTextPad : MonoBehaviour
     private float speed = 100;
 
     [Header("Dash")]
-    private float lastDashTime = -1f;
+
     [SerializeField]
     private float dashCooldown = 3f; // 1 second cooldown
 
+    private float lastDashTime = -1f;
 
 
     [SerializeField]

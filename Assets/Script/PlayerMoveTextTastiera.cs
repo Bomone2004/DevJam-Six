@@ -36,10 +36,11 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     private int playerIndex = 0;
 
     [Header("Dash")]
-    private float lastDashTime = -1f;
+
     [SerializeField]
     private float dashCooldown = 3f; // 1 second cooldown
 
+    private float lastDashTime = -1f;
 
     [SerializeField]
     float dashSpeed = 10f;
