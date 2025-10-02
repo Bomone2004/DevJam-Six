@@ -17,10 +17,17 @@ public class BallManager : MonoBehaviour
     [SerializeField]
     private int AddScore = 100;
     private Rigidbody rigidbodyBall;
+    [SerializeField] GameObject canvas;
+
+    [SerializeField] int WinScoor = 1000;
+
+    [SerializeField] float MaxSpeed = 3;
+    [SerializeField] float MinSpeed = 0.5f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip clickSound;
+
 
 
 
@@ -31,37 +38,47 @@ public class BallManager : MonoBehaviour
     {
         rigidbodyBall = GetComponent<Rigidbody>();
         BallStartPosition = transform.position;
-        int takerandomRange = Random.RandomRange(0, 2);
-        if (takerandomRange == 0)
-        {
-            speed = new Vector3(0, 0, StartSpeed);
-        }
-        if (takerandomRange == 1)
-        {
-            speed = new Vector3(0, 0, -StartSpeed);
-        }
-        
+        //int takerandomRange = Random.RandomRange(0, 2);
+        //if (takerandomRange == 0)
+        //{
+        //    speed = new Vector3(0, 0, StartSpeed);
+        //}
+        //if (takerandomRange == 1)
+        //{
+        //    speed = new Vector3(0, 0, -StartSpeed);
+        //}
+        SetInitialSpeed();
+
+
     }
 
     void Update()
     {
-        Vector3 movement1 = speed * Time.deltaTime;
-        if (speed.z > 1)
+        // Decelerazione sull'asse Z
+        if (Mathf.Abs(speed.z) > 1)
         {
-            speed.z -= deceleration *Time.deltaTime;
-            if (speed.z < 1)
+            float sign = Mathf.Sign(speed.z);
+            speed.z -= deceleration * Time.deltaTime * sign;
+            if (Mathf.Abs(speed.z) < 1)
             {
-                speed.z = 1;
-            }
-            if (speed.x > 10)
-            {
-                speed.z = 10;
+                speed.z = sign;
             }
         }
-        //transform.Translate(movement1);
+
+        // Limita la velocità massima
+        speed = ClampVector3Magnitude(speed, MaxSpeed);
+
+        Vector3 movement1 = speed * Time.deltaTime;
         rigidbodyBall.MovePosition(rigidbodyBall.position + movement1);
 
         Debug.LogWarning(movement1);
+
+
+        if (ScorePlayer1 == WinScoor ||  ScorePlayer2 == WinScoor)
+        {
+            canvas.SetActive(true);
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -129,4 +146,26 @@ public class BallManager : MonoBehaviour
             }
         }
     }
+
+    private Vector3 ClampVector3Magnitude(Vector3 v, float maxMagnitude)
+    {
+        if (v.magnitude > maxMagnitude)
+            return v.normalized * maxMagnitude;
+        return v;
+    }
+
+    // Imposta la velocità iniziale in modo casuale
+    private void SetInitialSpeed()
+    {
+        int takerandomRange = Random.Range(0, 2);
+        if (takerandomRange == 0)
+        {
+            speed = new Vector3(0, 0, StartSpeed);
+        }
+        else
+        {
+            speed = new Vector3(0, 0, -StartSpeed);
+        }
+    }
+
 }
