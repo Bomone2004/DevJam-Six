@@ -1159,7 +1159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c3a6ca780f1c04cb6e91dfbd3b5393, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.05000019
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c3a6ca780f1c04cb6e91dfbd3b5393, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1604,6 +1604,7 @@ MonoBehaviour:
   characterRigidbody2: {fileID: 1778636291}
   speed: 3
   playerIndex: 1
+  dashCooldown: 3
 --- !u!1001 &622207975
 PrefabInstance:
   m_ObjectHideFlags: 0

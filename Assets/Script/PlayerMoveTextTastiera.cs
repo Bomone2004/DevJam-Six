@@ -97,7 +97,7 @@ public class PlayerMoveTextTastiera : MonoBehaviour
     {
         float rtDash = Input.GetAxis("DashTastiera");
 
-        if (Time.time - lastDashTime >= dashCooldown)
+        if (Time.time - lastDashTime >= dashCooldown && rtDash >= 1.0f)
         {
             Player1.transform.position = new Vector3(Player1.transform.position.x, Player1.transform.position.y, savePlayerPosition2.z);
             Player2.transform.position = new Vector3(Player2.transform.position.x, Player2.transform.position.y, savePlayerPosition1.z);
